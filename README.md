@@ -1,24 +1,24 @@
 # Resume Agent Platform
 
-Resume Agent Platform is a local-first portfolio project for a cloud and infrastructure engineer. It exposes a FastAPI API, runs a LangGraph-based multi-agent workflow in `mock` mode by default, stores job metadata in SQLite, and writes outputs to local JSON and Markdown files.
+Resume Agent Platform은 클라우드/인프라 엔지니어 포트폴리오를 위한 로컬 우선 AI 에이전트 프로젝트입니다. FastAPI API를 제공하고, LangGraph 기반 멀티 에이전트 워크플로를 기본 `mock` 모드로 실행하며, 작업 메타데이터는 SQLite에 저장하고 결과물은 로컬 JSON 및 Markdown 파일로 남깁니다.
 
-## Overview
+## 개요
 
-- FastAPI API server
-- LangGraph workflow with six agents
-- SQLite persistence
-- Local `outputs/` storage
-- Docker Compose local runtime
-- Terraform limited to AWS IAM resources only
-- GitHub Actions for validation only
+- FastAPI 기반 API 서버
+- 6개 에이전트로 구성된 LangGraph 워크플로
+- SQLite 기반 작업 저장
+- 로컬 `outputs/` 결과 저장
+- Docker Compose 기반 로컬 실행
+- AWS IAM 범위로 제한된 Terraform 실습
+- 검증 전용 GitHub Actions CI
 
-## Current API
+## 현재 API
 
 - `GET /health`
 - `POST /api/v1/resume-jobs`
 - `GET /api/v1/resume-jobs/{job_id}`
 
-## Workflow
+## 에이전트 워크플로
 
 ```text
 JobAnalyzerAgent
@@ -29,7 +29,7 @@ JobAnalyzerAgent
 -> FinalEditorAgent
 ```
 
-Final response fields:
+최종 응답에는 다음 값이 포함됩니다.
 
 - `job_id`
 - `status`
@@ -37,7 +37,7 @@ Final response fields:
 - `review_summary`
 - `final_cover_letter`
 
-## Project Structure
+## 프로젝트 구조
 
 ```text
 app/
@@ -53,7 +53,7 @@ data/
 outputs/
 ```
 
-## Environment Variables
+## 환경 변수
 
 ```env
 APP_NAME=Resume Agent Platform
@@ -67,9 +67,9 @@ DATABASE_PATH=data/resume_agent.db
 OUTPUTS_DIR=outputs
 ```
 
-## Local Development
+## 로컬 개발
 
-### Run with venv
+### 가상환경으로 실행
 
 ```powershell
 python -m venv .venv
@@ -79,9 +79,13 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Open `http://localhost:8000/docs`.
+실행 후 접속:
 
-### Run checks
+```text
+http://localhost:8000/docs
+```
+
+### 로컬 검증
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
@@ -96,27 +100,27 @@ docker compose up --build
 docker compose down
 ```
 
-Volumes:
+마운트 볼륨:
 
 - `./data:/app/data`
 - `./outputs:/app/outputs`
 
-## LLM Provider Policy
+## LLM Provider 정책
 
-- Default provider is `mock`
-- No real LLM API call is made in `mock` mode
-- Real LLM integration is only allowed when the user explicitly provides an API key and changes the provider
-- The current `openai` client is a guarded placeholder and does not call the API yet
+- 기본 provider는 `mock`
+- `mock` 모드에서는 실제 LLM API를 호출하지 않음
+- 실제 LLM 연동은 사용자가 API key를 명시적으로 제공하고 provider를 변경한 경우에만 허용
+- 현재 `openai` 클라이언트는 가드가 있는 placeholder이며 실제 API를 호출하지 않음
 
-## Storage
+## 저장 구조
 
-- SQLite database: `data/resume_agent.db`
-- JSON outputs: `outputs/{job_id}.json`
-- Markdown outputs: `outputs/{job_id}.md`
+- SQLite 데이터베이스: `data/resume_agent.db`
+- JSON 결과 파일: `outputs/{job_id}.json`
+- Markdown 결과 파일: `outputs/{job_id}.md`
 
-## Terraform Scope
+## Terraform 범위
 
-Allowed resources:
+허용 리소스:
 
 - IAM User
 - IAM Group
@@ -126,7 +130,7 @@ Allowed resources:
 - GitHub Actions OIDC Provider
 - GitHub Actions Assume Role
 
-Forbidden resources:
+금지 리소스:
 
 - EC2
 - ECS
@@ -141,7 +145,7 @@ Forbidden resources:
 - VPC
 - CloudWatch
 
-Commands:
+주요 명령:
 
 ```bash
 cd terraform
@@ -153,11 +157,11 @@ terraform apply -var="github_org=<your-org>" -var="github_repo=<your-repo>"
 terraform destroy -var="github_org=<your-org>" -var="github_repo=<your-repo>"
 ```
 
-`terraform apply` and `terraform destroy` are manual only.
+`terraform apply`와 `terraform destroy`는 수동 실행만 허용합니다.
 
 ## GitHub Actions
 
-Included checks:
+포함된 검증:
 
 - `ruff check`
 - `pytest`
@@ -165,10 +169,26 @@ Included checks:
 - `docker compose config`
 - `terraform fmt -check`
 - `terraform validate`
-- conditional `terraform plan`
+- 조건부 `terraform plan`
 
-The workflows do not run `terraform apply` or `terraform destroy`.
+GitHub Actions에서는 `terraform apply`와 `terraform destroy`를 자동 실행하지 않습니다.
 
-## Portfolio Summary
+## 현재 완료 상태
 
-This project demonstrates a local-first agent platform that combines FastAPI, LangGraph, SQLite, Docker Compose, Terraform IAM practice, and GitHub Actions validation without introducing paid AWS runtime resources.
+완료된 항목:
+
+- FastAPI API 구현
+- LangGraph 워크플로 구현
+- SQLite 및 outputs 저장 구현
+- Docker Compose 실행 검증
+- Terraform `fmt`, `init`, `validate`, `plan`, `apply`, `destroy` 수동 검증
+- GitHub Actions CI 실제 실행 확인
+
+아직 남아 있는 항목:
+
+- GitHub Actions와 AWS의 실제 OIDC 연동 확인
+- GitHub repository secrets 또는 OIDC 기반 AWS 인증 최종 정리
+
+## 포트폴리오 요약
+
+이 프로젝트는 FastAPI, LangGraph, SQLite, Docker Compose, Terraform IAM 실습, GitHub Actions 검증을 결합한 로컬 우선 AI 에이전트 플랫폼입니다. 비용이 발생할 수 있는 AWS 런타임 리소스를 만들지 않고도 백엔드, 워크플로, 저장소, IaC, CI 구성을 함께 보여주는 포트폴리오 프로젝트를 목표로 합니다.

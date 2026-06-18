@@ -94,8 +94,9 @@
 - [O] `terraform fmt -check -recursive` 검증
 - [O] `terraform init -backend=false` 검증
 - [O] `terraform validate` 검증
-- [-] AWS 자격 증명으로 `terraform plan` 실제 실행 확인
-- [-] AWS에 `terraform apply` 수동 실행
+- [O] AWS 자격 증명으로 `terraform plan` 실제 실행 확인
+- [O] AWS에 `terraform apply` 수동 실행
+- [O] AWS에 `terraform destroy` 수동 실행
 
 ---
 
@@ -109,8 +110,9 @@
 - [O] Terraform validate 검사 추가
 - [O] Terraform plan 단계 추가
 - [O] `terraform apply` 자동 실행 금지 확인
-- [-] GitHub Actions 실제 실행 결과 확인
+- [O] GitHub Actions 실제 실행 결과 확인
 - [-] GitHub repository secrets 또는 OIDC 실제 연동
+- [-] GitHub Actions와 AWS의 실제 OIDC 신뢰 연결 확인
 
 ---
 
@@ -137,14 +139,13 @@
 - [O] Docker Compose 로컬 실행 검증
 - [O] Terraform IAM 코드 작성
 - [O] Terraform 로컬 검증 (`fmt`, `init`, `validate`)
+- [O] Terraform `plan/apply/destroy` 실제 확인
 - [O] GitHub Actions workflow 파일 작성
+- [O] GitHub Actions 실제 실행 확인
 
 ### 아직 실제 연동하지 않은 것
 
-- [-] AWS 계정에 실제 `terraform apply`
-- [-] AWS 자격 증명으로 `terraform plan` 실행 확인
 - [-] GitHub repository에 secrets 설정
-- [-] GitHub Actions 실제 실행 확인
 - [-] GitHub Actions와 AWS의 실제 OIDC 신뢰 연결 확인
 
 ---
@@ -163,5 +164,6 @@
 - [O] 비용이 발생할 수 있는 AWS 리소스를 생성하지 않는다
 - [O] GitHub Actions에서 테스트와 검증이 자동 실행되도록 파일이 구성되어 있다
 - [O] GitHub Actions에서 `terraform apply`를 자동 실행하지 않는다
-- [-] GitHub Actions 실제 실행 확인
-- [-] AWS 실제 연동 확인
+- [O] GitHub Actions 실제 실행 확인
+- [O] AWS 실제 연동 확인
+- [-] GitHub Actions OIDC 실제 연동 확인
